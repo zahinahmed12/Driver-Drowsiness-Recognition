@@ -53,9 +53,6 @@ def prepare_df(data_type):
     return np.array(X, dtype="float32"), np.array(y, dtype="float32")
 
 
-# In[30]:
-
-
 def get_datagen():
 
     datagen = ImageDataGenerator(
@@ -66,8 +63,6 @@ def get_datagen():
     )
     return datagen
 
-
-# In[31]:
 
 def get_model():
 
@@ -91,9 +86,6 @@ def get_model():
                   loss='binary_crossentropy',
                   metrics=['accuracy'])
     return model
-
-
-# In[33]:
 
 
 def prediction(model):
