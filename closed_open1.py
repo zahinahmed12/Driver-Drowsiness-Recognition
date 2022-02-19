@@ -19,36 +19,21 @@ def prepare_df(data_type):
         X.append(i)
         # Label
         y.append(i.split('_')[0])
-    # path2 = './dataset_new/' + data_type + '/co/open/'
-    # for i in os.listdir(path2):
-    #     # Image
-    #     X.append(i)
-    #     # Label
-    #     y.append("1")
 
     X = np.array(X)
     y = np.array(y)
-    # print(X.shape)
-
-    # shuffle = np.random.permutation(X.shape[0])
-    # X = X[shuffle]
-    # y = y[shuffle]
-    # print(X[0:10])
 
     df = pd.DataFrame()
     df['filename'] = X
     df['label'] = y
-    # print(df['filename'].head(20))
+
     return df
 
 
 def get_datagen():
 
     datagen = ImageDataGenerator(
-        # featurewise_center=True,
-        # featurewise_std_normalization=True,
-        # width_shift_range=0.2,
-        # height_shift_range=0.2,
+        # rescale=1/255,
         rotation_range=20,
         zoom_range=0.2,
         horizontal_flip=True,
@@ -91,16 +76,17 @@ def get_model():
                   loss='binary_crossentropy',
                   metrics=['accuracy'])
 
-    model.summary()
+    # model.summary()
     return model
 
 
 def prediction(model):
     y_true = []
     y_pred = []
-
-    for i in os.listdir('./dataset_new/test/co/'):
-        img = Image.open('./dataset_new/test/co/' + i)
+    path = './dataset_new/test/co/'
+    # path = './dataset_new/test/ny/'
+    for i in os.listdir(path):
+        img = Image.open(path + i)
         img = img.resize((256, 256))
         img = np.array(img)
         img = np.expand_dims(img, 0)
@@ -122,26 +108,16 @@ def main():
     test_generator = get_data_flow(test_datagen, df_test, "test")
 
     model = get_model()
-    # model.fit(train_generator, epochs=1, validation_data=test_generator)
-    # prediction(model)
+    model.fit(train_generator, epochs=10)
+    # model.save('./resnet50_eye_model')
+    prediction(model)
 
-    # train_generator = train_datagen.flow_from_dataframe(
-    #     df_train,
-    #     directory='./dataset_new/train/co/',
-    #     x_col='filename',
-    #     y_col='label',
-    #     class_mode='binary',
-    #     target_size=(256, 256),
-    # )
-    #
-    # test_generator = test_datagen.flow_from_dataframe(
-    #     df_test,
-    #     directory='./dataset_new/test/co/',
-    #     x_col='filename',
-    #     y_col='label',
-    #     class_mode='binary',
-    #     target_size=(256, 256),
-    # )
+    # img = tf.keras.utils.load_img('./dataset_new/train/ny/no_yawn/56.jpg', target_size=(256, 256))
+    # img_array = tf.keras.utils.img_to_array(img)
+    # img_array = tf.expand_dims(img_array, 0)  # Create a batch
+    # predictions = model.predict(img_array)
+    # score = tf.nn.softmax(predictions[0])
+    # print(np.argmax(score), 100 * np.max(score))
 
 
 if __name__ == '__main__':

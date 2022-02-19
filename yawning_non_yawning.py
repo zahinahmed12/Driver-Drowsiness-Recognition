@@ -30,7 +30,7 @@ np.random.seed(4)
 
 
 def prepare_df(data_type):
-    path_link="./dataset_new/" + data_type + "/ny"
+    path_link = "./dataset_new/" + data_type + "/ny"
     yaw_no = []
     IMG_SIZE = 256
     face_cas_path="./haarcascades/haarcascade_frontalface_default.xml"
@@ -44,13 +44,15 @@ def prepare_df(data_type):
             roi_color = img[y:y+h, x:x+w]
             resized_array = cv2.resize(roi_color, (IMG_SIZE, IMG_SIZE))
             yaw_no.append([resized_array, class_num1])
+            cv2.imshow('image', img)
+            cv2.waitKey(0)
     new_data = np.array(yaw_no)
     X = []
     y = []
     for feature, label in new_data:
         X.append(feature)
         y.append(label)
-    return np.array(X, dtype="float32"), np.array(y, dtype="float32")
+    return np.array(X, dtype="float32"), np.array(y, dtype="int32")
 
 
 def get_datagen():
@@ -112,12 +114,12 @@ def main():
     train_datagen = get_datagen()
     test_datagen = get_datagen()
 
-    model = get_model()
-    model.fit(
-        train_datagen.flow(X_train, y_train, batch_size=32),
-        steps_per_epoch=len(X_train) // 32,
-        epochs=20)
-    prediction(model)
+    # model = get_model()
+    # model.fit(
+    #     train_datagen.flow(X_train, y_train, batch_size=32),
+    #     # steps_per_epoch=len(X_train) // 32,
+    #     epochs=2)
+    # prediction(model)
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ face_cascade = cv2.CascadeClassifier('./haarcascades/haarcascade_frontalface_def
 eye_cascade = cv2.CascadeClassifier('./haarcascades/haarcascade_eye.xml')
 
 
-img = cv2.imread('./dataset_new/train/ny/0_613.jpg')
+img = cv2.imread('./dataset_new/test/ny/1_100.jpg')
 
 
 r = 500.0 / img.shape[1]
