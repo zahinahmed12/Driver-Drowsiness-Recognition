@@ -78,7 +78,7 @@ def get_model():
                   loss='binary_crossentropy',
                   metrics=['accuracy'])
 
-    # model.summary()
+    model.summary()
     return model
 
 
@@ -113,7 +113,7 @@ def main():
     test_generator = get_data_flow(test_datagen, df_test, "test")
 
     model = get_model()
-    model.fit(train_generator, epochs=10, validation_data=valid_generator)
+    model.fit(train_generator, epochs=5, validation_data=valid_generator)
     # model.save('./resnet50_eye_model_2')
     prediction(model)
 
